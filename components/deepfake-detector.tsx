@@ -36,7 +36,7 @@ export default function DeepfakeDetector() {
       formData.append("file", file);
 
       // Send the request to the API endpoint
-      const response = await fetch("https://127.0.0.1:5000/predict", {
+      const response = await fetch("http://127.0.0.1:5000/predict", {
         method: "POST",
         body: formData,
       });
@@ -48,7 +48,7 @@ export default function DeepfakeDetector() {
 
       const data = await response.json();
       console.log(data);
-      setResult(Boolean(data.result));
+      setResult(data.result === "True");
     } catch (err) {
       console.error("Error processing image:", err);
       setError(
