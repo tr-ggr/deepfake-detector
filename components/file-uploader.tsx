@@ -6,6 +6,8 @@ import { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { X, AlertCircle, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { FileRejection } from "react-dropzone";
+import Image from "next/image";
 
 interface FileUploaderProps {
   onFilesAdded: (files: File[]) => void;
@@ -54,7 +56,7 @@ export function FileUploader({
     [onFilesAdded]
   );
 
-  const onDropRejected = useCallback((fileRejections: any[]) => {
+  const onDropRejected = useCallback((fileRejections: FileRejection[]) => {
     const rejection = fileRejections[0];
     if (rejection?.errors[0]?.code === "file-invalid-type") {
       setError("Invalid file type. Please upload an image file.");
@@ -98,7 +100,7 @@ export function FileUploader({
 
         {preview ? (
           <div className="relative w-full h-full">
-            <img
+            <Image
               src={preview || "/placeholder.svg"}
               alt="Uploaded image"
               className="w-full h-full object-contain"
