@@ -101,6 +101,8 @@ export function FileUploader({
         {preview ? (
           <div className="relative w-full h-full">
             <Image
+              width={128}
+              height={128}
               src={preview || "/placeholder.svg"}
               alt="Uploaded image"
               className="w-full h-full object-contain"

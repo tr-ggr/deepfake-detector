@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function DeepfakeDetector() {
   const [file, setFile] = useState<File | null>(null);
-  const [result, setResult] = useState<string | null>(null);
+  const [result, setResult] = useState<boolean | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,13 +36,10 @@ export default function DeepfakeDetector() {
       formData.append("file", file);
 
       // Send the request to the API endpoint
-      const response = await fetch(
-        "https://deepfake-detector-three.vercel.app:5000/predict",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch("https://127.0.0.1:5000/predict", {
+        method: "POST",
+        body: formData,
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -51,7 +48,7 @@ export default function DeepfakeDetector() {
 
       const data = await response.json();
       console.log(data);
-      setResult(data.result);
+      setResult(Boolean(data.result));
     } catch (err) {
       console.error("Error processing image:", err);
       setError(
@@ -84,16 +81,16 @@ export default function DeepfakeDetector() {
           </div>
 
           {/* Result Display */}
-          {(result == "True") !== null && (
+          {result !== null && (
             <div
               className={`w-full text-center p-6 rounded-xl border shadow-sm ${
-                result == "True"
+                result
                   ? "bg-gradient-to-r from-red-50 to-red-100 border-red-200"
                   : "bg-gradient-to-r from-green-50 to-green-100 border-green-200"
               }`}
             >
               <div className="flex flex-col items-center gap-3">
-                {result == "True" ? (
+                {result ? (
                   <>
                     <XCircle className="h-12 w-12 text-red-500" />
                     <p className="text-xl font-medium">
